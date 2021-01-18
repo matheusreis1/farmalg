@@ -19,3 +19,15 @@ int main() {
 
     printf("%d", aux);
 }
+
+/*
+Faça um programa que leia três valores inteiros (a,b,c) e apresente o maior número lido.
+
+Exemplo de leitura
+5
+-1
+10
+
+Exemplo de saída
+10
+*/
