@@ -1,4 +1,5 @@
 IMAGE_TAG=farmalg
+CONTAINER_NAME=training
 
 # make build path={folder}
 build:
@@ -8,7 +9,7 @@ build:
 # make run path={folder}
 run:
 	@make build
-	docker run -it --rm --name $(path) $(IMAGE_TAG)
+	docker run -it --rm --name $(CONTAINER_NAME) $(IMAGE_TAG)
 
 # make build PATH={new_folder}
 new:
