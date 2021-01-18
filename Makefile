@@ -7,6 +7,7 @@ build:
 
 # make run path={folder}
 run:
+	@make build
 	docker run -it --rm --name $(path) $(IMAGE_TAG)
 
 # make build PATH={new_folder}
