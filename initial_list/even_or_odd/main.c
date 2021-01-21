@@ -5,16 +5,11 @@ int main() {
 
     scanf("%d", &num_a);
 
-    oven_or_odd(num_a);
+    even_or_odd(num_a);
 }
 
-int oven_or_odd(number) {
-    if (number % 2 == 0) {
-        printf("%d par", number);
-    } else {
-        printf("%d impar", number);
-    }
-    return 0;
+void even_or_odd(number) {
+    ( number % 2 == 0 ) ? printf("%d par\n", number) : printf("%d impar\n", number);
 }
 
 /*
