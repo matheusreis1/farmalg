@@ -1,7 +1,16 @@
 #include <stdio.h>
 
 int main() {
-    printf("Hello World!");
+    float number, number_float;
+    int number_int;
+
+    scanf("%f", &number);
+
+    number_int = number;
+    number_float = number - number_int;
+
+    printf("%d\n", number_int);
+    printf("%f", number_float);
 }
 
 /*
