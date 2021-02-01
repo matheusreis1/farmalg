@@ -31,17 +31,6 @@ void valoresNaoPodemCelula(int jogo[][TAMANHO], int lin, int col, int resultado[
 void numPossibilidades(int jogo[][TAMANHO], int lin, int col, int resultado[],
                             int linha[], int coluna[], int grupo[], int tam);
 
-int isUsedInRow(int linha[], int num) {
-    int index;
-    for (index = 0; index < TAMANHO; index++) {
-        printf("%d", linha[index]);
-        if (linha[index] == num) {
-            return 1;
-        }
-    }
-    return 0;
-}
-
 void valoresAusentesLinha(int jogo[][TAMANHO], int lin, int resultado[], int tam) {
     int i, valorAtual, index, j;
     int vet[TAMANHO];
@@ -87,6 +76,10 @@ void valoresAusentesColuna(int jogo[][TAMANHO], int col, int resultado[], int ta
     }
 }
 
+void valoresAusentesGrupo(int jogo[][TAMANHO], int grp, int resultado[], int tam) {
+    printf("grupo %d\n", grp);
+}
+
 int solucaoSudoku(int solucao[][TAMANHO], int tam) {
     int possibilidades[TAMANHO][TAMANHO];
     int linha[TAMANHO], coluna[TAMANHO], grupo[TAMANHO], valoresPossiveis[TAMANHO];
@@ -97,14 +90,14 @@ int solucaoSudoku(int solucao[][TAMANHO], int tam) {
         recomecar = 0, temLacuna = 0;
 
         for (i = 0; i < tam; i++) { // percorre as linhas
-            printf("LINHA %d:\n", i);
+            // printf("LINHA %d:\n", i);
             for (j = 0; j < tam; j++) { // percorre as colunas
-                printf("COLUNA %d:\n", j);
+                // printf("COLUNA %d:\n", j);
                 if (solucao[i][j] == 0) { // solucao[i][j] tem o valor de cada celula
                     temLacuna = 1;
                     printf("tem lacuna, valor : %d\n", solucao[i][j]);
                     // avalia as possibilidades
-                    
+
                     inicializaVetor(linha, tam); // inicia 3 vetores: linha, coluna e grupo com tamanho igual a 9
                     inicializaVetor(coluna, tam);
                     inicializaVetor(grupo, tam);
@@ -114,11 +107,11 @@ int solucaoSudoku(int solucao[][TAMANHO], int tam) {
                     // entra na funcao somente se o temLacuna for igual a 1
                     valoresAusentesLinha(solucao, i, &linha, tam);
                     valoresAusentesColuna(solucao, j, &coluna, tam);
-                    
-                    /*
+
                     // grupo (vejam a planilha no moodle)
-                    k = ((int)(i/3))*3 + j;
+                    k = ((int)(i/3))*3 + ((int)(j/3))* + 1;
                     valoresAusentesGrupo(solucao, k, grupo, tam);
+                    /*
                     possib = numPossibilidades(solucao, i, j, valoresPossiveis, linha, coluna, grupo, tam);
 
                     if (possib == 1) {
