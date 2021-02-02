@@ -76,8 +76,102 @@ void valoresAusentesColuna(int jogo[][TAMANHO], int col, int resultado[], int ta
     }
 }
 
+/**
+ * grupo 1:        | grupo 2:         | grupo 3:         |
+ *  - linha 0 - 2  |  - linha: 0 - 2  |  - linha: 0 - 2  |
+ *  - coluna 0 - 2 |  - coluna: 3 - 5 |  - coluna: 6 - 8 |
+ * -------------------------------------------------------
+ * grupo 4:        | grupo 5:         | grupo 6:         |
+ *  - linha 3 - 5  |  - linha: 3 - 5  |  - linha: 3 - 5  |
+ *  - coluna 0 - 2 |  - coluna: 3 - 5 |  - coluna: 6 - 8 |
+ * -------------------------------------------------------
+ * grupo 7:        | grupo 8:         | grupo 9:         |
+ *  - linha 6 - 8  |  - linha: 6 - 8  |  - linha: 6 - 8  |
+ *  - coluna 0 - 2 |  - coluna: 3 - 5 |  - coluna: 6 - 8 |
+*/
 void valoresAusentesGrupo(int jogo[][TAMANHO], int grp, int resultado[], int tam) {
     printf("grupo %d\n", grp);
+    int i, valorAtual, linha, coluna, j;
+    int comecoLinha, comecoColuna, limiteLinha, limiteColuna;
+    int vet[TAMANHO];
+
+    inicializaVetor(vet, tam);
+    switch (grp) {
+        case 1:
+            comecoLinha = 0;
+            limiteLinha = 3;
+            comecoColuna = 0;
+            limiteColuna = 3;
+            break;
+        case 2:
+            comecoLinha = 0;
+            limiteLinha = 3;
+            comecoColuna = 3;
+            limiteColuna = 6;
+            break;
+        case 3:
+            comecoLinha = 0;
+            limiteLinha = 3;
+            comecoColuna = 6;
+            limiteColuna = 9;
+            break;
+        case 4:
+            comecoLinha = 3;
+            limiteLinha = 6;
+            comecoColuna = 0;
+            limiteColuna = 3;
+            break;
+        case 5:
+            comecoLinha = 3;
+            limiteLinha = 6;
+            comecoColuna = 3;
+            limiteColuna = 6;
+            break;
+        case 6:
+            comecoLinha = 3;
+            limiteLinha = 6;
+            comecoColuna = 6;
+            limiteColuna = 9;
+            break;
+        case 7:
+            comecoLinha = 6;
+            limiteLinha = 9;
+            comecoColuna = 0;
+            limiteColuna = 3;
+            break;
+        case 8:
+            comecoLinha = 6;
+            limiteLinha = 9;
+            comecoColuna = 3;
+            limiteColuna = 6;
+            break;
+        case 9:
+            comecoLinha = 6;
+            limiteLinha = 9;
+            comecoColuna = 6;
+            limiteColuna = 9;
+            break;
+        default:
+            break;
+    }
+
+    for (i = 0; i < tam; i++) {
+        valorAtual = valoresPossiveis[i];
+
+        for (linha = comecoLinha; linha < limiteLinha; linha++) {
+            for (coluna = comecoColuna; coluna < limiteColuna; coluna++) {
+                if (jogo[linha][coluna] == valorAtual) {
+                    vet[i] = valorAtual;
+                }
+            }
+        }
+    }
+    for (j = 0; j < tam; j++) {
+        if (vet[j] == 0) {
+            resultado[j] = j+1;
+        }
+    }
+
 }
 
 int solucaoSudoku(int solucao[][TAMANHO], int tam) {
@@ -109,8 +203,9 @@ int solucaoSudoku(int solucao[][TAMANHO], int tam) {
                     valoresAusentesColuna(solucao, j, &coluna, tam);
 
                     // grupo (vejam a planilha no moodle)
-                    k = ((int)(i/3))*3 + ((int)(j/3))* + 1;
-                    valoresAusentesGrupo(solucao, k, grupo, tam);
+                    k = ((int)(i/3))*3 + ((int)(j/3)) + 1;
+                    valoresAusentesGrupo(solucao, k, &grupo, tam);
+
                     /*
                     possib = numPossibilidades(solucao, i, j, valoresPossiveis, linha, coluna, grupo, tam);
 
