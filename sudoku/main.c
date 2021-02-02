@@ -205,12 +205,7 @@ int solucaoSudoku(int solucao[][TAMANHO], int tam) {
                     // grupo (vejam a planilha no moodle)
                     k = ((int)(i/3))*3 + ((int)(j/3)) + 1;
                     valoresAusentesGrupo(solucao, k, &grupo, tam);
-                    int z;
-                    for (z = 0; z < tam; z++) {
-                        /* code */
-                        printf("item %d ", grupo[z]);
-                    }
-                    printf("\n");
+                    showVet(grupo, tam);
                     
                     /*
                     possib = numPossibilidades(solucao, i, j, valoresPossiveis, linha, coluna, grupo, tam);
@@ -268,11 +263,13 @@ void inicializaVetor(int v[], int tam) {
     }
 }
 
-// void inicializa3Vetor(int v1[], int v2[], int v3[], int tam) {
-//     inicializaVetor(v1, tam);
-//     inicializaVetor(v2, tam);
-//     inicializaVetor(v3, tam);
-// }
+void showVet(int vetor[], int tam) {
+    int z;
+    for (z = 0; z < tam; z++) {
+        printf("item %d ", vetor[z]);
+    }
+    printf("\n");
+}
 
 void showMat(int mat[][TAMANHO], int tam) {
     int i, j;
