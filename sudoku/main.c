@@ -99,57 +99,57 @@ void valoresAusentesGrupo(int jogo[][TAMANHO], int grp, int resultado[], int tam
     switch (grp) {
         case 1:
             comecoLinha = 0;
-            limiteLinha = 3;
+            limiteLinha = 2;
             comecoColuna = 0;
-            limiteColuna = 3;
+            limiteColuna = 2;
             break;
         case 2:
             comecoLinha = 0;
-            limiteLinha = 3;
+            limiteLinha = 2;
             comecoColuna = 3;
-            limiteColuna = 6;
+            limiteColuna = 5;
             break;
         case 3:
             comecoLinha = 0;
-            limiteLinha = 3;
+            limiteLinha = 2;
             comecoColuna = 6;
-            limiteColuna = 9;
+            limiteColuna = 8;
             break;
         case 4:
             comecoLinha = 3;
-            limiteLinha = 6;
+            limiteLinha = 5;
             comecoColuna = 0;
-            limiteColuna = 3;
+            limiteColuna = 2;
             break;
         case 5:
             comecoLinha = 3;
-            limiteLinha = 6;
+            limiteLinha = 5;
             comecoColuna = 3;
-            limiteColuna = 6;
+            limiteColuna = 5;
             break;
         case 6:
             comecoLinha = 3;
-            limiteLinha = 6;
+            limiteLinha = 5;
             comecoColuna = 6;
-            limiteColuna = 9;
+            limiteColuna = 8;
             break;
         case 7:
             comecoLinha = 6;
-            limiteLinha = 9;
+            limiteLinha = 8;
             comecoColuna = 0;
-            limiteColuna = 3;
+            limiteColuna = 2;
             break;
         case 8:
             comecoLinha = 6;
-            limiteLinha = 9;
+            limiteLinha = 8;
             comecoColuna = 3;
-            limiteColuna = 6;
+            limiteColuna = 5;
             break;
         case 9:
             comecoLinha = 6;
-            limiteLinha = 9;
+            limiteLinha = 8;
             comecoColuna = 6;
-            limiteColuna = 9;
+            limiteColuna = 8;
             break;
         default:
             break;
@@ -158,8 +158,8 @@ void valoresAusentesGrupo(int jogo[][TAMANHO], int grp, int resultado[], int tam
     for (i = 0; i < tam; i++) {
         valorAtual = valoresPossiveis[i];
 
-        for (linha = comecoLinha; linha < limiteLinha; linha++) {
-            for (coluna = comecoColuna; coluna < limiteColuna; coluna++) {
+        for (linha = comecoLinha; linha <= limiteLinha; linha++) {
+            for (coluna = comecoColuna; coluna <= limiteColuna; coluna++) {
                 if (jogo[linha][coluna] == valorAtual) {
                     vet[i] = valorAtual;
                 }
@@ -205,7 +205,13 @@ int solucaoSudoku(int solucao[][TAMANHO], int tam) {
                     // grupo (vejam a planilha no moodle)
                     k = ((int)(i/3))*3 + ((int)(j/3)) + 1;
                     valoresAusentesGrupo(solucao, k, &grupo, tam);
-
+                    int z;
+                    for (z = 0; z < tam; z++) {
+                        /* code */
+                        printf("item %d ", grupo[z]);
+                    }
+                    printf("\n");
+                    
                     /*
                     possib = numPossibilidades(solucao, i, j, valoresPossiveis, linha, coluna, grupo, tam);
 
