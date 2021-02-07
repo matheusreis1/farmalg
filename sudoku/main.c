@@ -10,7 +10,7 @@
 
 #define TAMANHO 9
 
-int valoresPossiveis[TAMANHO] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+int valoresBase[TAMANHO] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
 //-------------------------------------------------------------------
 // Prototipo das funcões - isso permite que elas sejam colocados
 // dentro do arquivo C, em qualquer ordem.
@@ -18,7 +18,7 @@ int valoresPossiveis[TAMANHO] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
 void inicializaVetor(int v[], int tam);
 void inicializa3Vetor(int v1[], int v2[], int v3[], int tam);
 void showMat(int mat[][TAMANHO], int tam);
-void showVet(int vetor[], int tam);
+void showVet(int vetor[], int tam, char contexto[10]);
 
 // funcoes principais
 void valoresAusentesLinha(int jogo[][TAMANHO], int lin, int resultado[], int tam);
@@ -28,7 +28,7 @@ void valoresPossiveisCelula(int jogo[][TAMANHO], int lin, int col, int resultado
                             int linha[], int coluna[], int grupo[], int tam);
 void valoresNaoPodemCelula(int jogo[][TAMANHO], int lin, int col, int resultado[],
                             int linha[], int coluna[], int grupo[], int tam);
-void numPossibilidades(int jogo[][TAMANHO], int lin, int col, int resultado[],
+int numPossibilidades(int jogo[][TAMANHO], int lin, int col, int resultado[],
                             int linha[], int coluna[], int grupo[], int tam);
 
 void valoresAusentesLinha(int jogo[][TAMANHO], int lin, int resultado[], int tam) {
@@ -38,7 +38,7 @@ void valoresAusentesLinha(int jogo[][TAMANHO], int lin, int resultado[], int tam
     inicializaVetor(vet, tam);
 
     for (i = 0; i < tam; i++) {
-        valorAtual = valoresPossiveis[i];
+        valorAtual = valoresBase[i];
         for (index = 0; index < TAMANHO; index++) {
             if (jogo[lin][index] == valorAtual) {
                 vet[i] = valorAtual;
@@ -60,7 +60,7 @@ void valoresAusentesColuna(int jogo[][TAMANHO], int col, int resultado[], int ta
     inicializaVetor(vet, tam);
 
     for (i = 0; i < tam; i++) {
-        valorAtual = valoresPossiveis[i];
+        valorAtual = valoresBase[i];
 
         for (index = 0; index < TAMANHO; index++) {
             if (jogo[index][col] == valorAtual) {
@@ -90,7 +90,6 @@ void valoresAusentesColuna(int jogo[][TAMANHO], int col, int resultado[], int ta
  *  - coluna 0 - 2 |  - coluna: 3 - 5 |  - coluna: 6 - 8 |
 */
 void valoresAusentesGrupo(int jogo[][TAMANHO], int grp, int resultado[], int tam) {
-    printf("grupo %d\n", grp);
     int i, valorAtual, linha, coluna, j;
     int comecoLinha, comecoColuna, limiteLinha, limiteColuna;
     int vet[TAMANHO];
@@ -156,7 +155,7 @@ void valoresAusentesGrupo(int jogo[][TAMANHO], int grp, int resultado[], int tam
     }
 
     for (i = 0; i < tam; i++) {
-        valorAtual = valoresPossiveis[i];
+        valorAtual = valoresBase[i];
 
         for (linha = comecoLinha; linha <= limiteLinha; linha++) {
             for (coluna = comecoColuna; coluna <= limiteColuna; coluna++) {
@@ -174,10 +173,38 @@ void valoresAusentesGrupo(int jogo[][TAMANHO], int grp, int resultado[], int tam
 
 }
 
+void valoresPossiveisCelula(int jogo[][TAMANHO], int lin, int col, int resultado[], int linha[], int coluna[], int grupo[], int tam) {
+    int i, z, y;
+    
+    for (i = 0; i < tam; i++) {
+        for (z = 0; z < tam; z++) {
+            if (linha[i] == coluna[z] && linha[i] != 0) {
+                for (y = 0; y < tam; y++) {
+                    if (coluna[z] == grupo[y]) {
+                        resultado[i] = valoresBase[i];
+                    }
+                }
+            }
+        }
+    }
+}
+
+int numPossibilidades(int jogo[][TAMANHO], int lin, int col, int resultado[], int linha[], int coluna[], int grupo[], int tam) {
+    int i, countPossibilidades;
+    countPossibilidades = 0;
+
+    for (i = 0; i < tam; i++) {
+        if (resultado[i] != 0)
+            ++countPossibilidades;
+    }
+
+    return countPossibilidades;
+}
+
 int solucaoSudoku(int solucao[][TAMANHO], int tam) {
     int possibilidades[TAMANHO][TAMANHO];
-    int linha[TAMANHO], coluna[TAMANHO], grupo[TAMANHO], valoresPossiveis[TAMANHO];
-    int i, j, k, possib;
+    int linha[TAMANHO], coluna[TAMANHO], grupo[TAMANHO], valoresPossiveis[TAMANHO], valoresNaoPossiveis[TAMANHO];
+    int i, j, k, possib, x;
     char recomecar = 0, temLacuna = 0;
 
     do {
@@ -189,13 +216,13 @@ int solucaoSudoku(int solucao[][TAMANHO], int tam) {
                 // printf("COLUNA %d:\n", j);
                 if (solucao[i][j] == 0) { // solucao[i][j] tem o valor de cada celula
                     temLacuna = 1;
-                    printf("tem lacuna, valor : %d\n", solucao[i][j]);
                     // avalia as possibilidades
 
                     inicializaVetor(linha, tam); // inicia 3 vetores: linha, coluna e grupo com tamanho igual a 9
                     inicializaVetor(coluna, tam);
                     inicializaVetor(grupo, tam);
                     inicializaVetor(valoresPossiveis, tam); // inicia 1 vetor: valoresPossiveis com tamanho igual a 9
+                    inicializaVetor(valoresNaoPossiveis, tam); // inicia 1 vetor: valoresPossiveis com tamanho igual a 9
 
                     // chama passando a matriz solucao, a linha que o loop esta, vetor linha e tamanho 9
                     // entra na funcao somente se o temLacuna for igual a 1
@@ -205,22 +232,25 @@ int solucaoSudoku(int solucao[][TAMANHO], int tam) {
                     // grupo (vejam a planilha no moodle)
                     k = ((int)(i/3))*3 + ((int)(j/3)) + 1;
                     valoresAusentesGrupo(solucao, k, &grupo, tam);
-                    showVet(grupo, tam);
-                    
-                    /*
+                    // showVet(linha, tam, "linha");
+                    // showVet(coluna, tam, "coluna");
+                    // showVet(grupo, tam, "grupo");
+
+                    valoresPossiveisCelula(solucao, i, j, &valoresPossiveis, linha, coluna, grupo, tam);
+
                     possib = numPossibilidades(solucao, i, j, valoresPossiveis, linha, coluna, grupo, tam);
 
                     if (possib == 1) {
-                        solucao[i][j] = valoresPossiveis[0]; // Observe que é esperado que o valor venha na 1a posicao
-                        // esse tipo de quebra do fluxo de execução deve ser usado com cautela.
-                        recomecar = 1;
-                        break LACO_EXTERNO;
+                        for (x = 0; x < tam; x++) {
+                            if (valoresPossiveis[x] != 0 ) {
+                                solucao[i][j] = valoresPossiveis[x];
+                            }
+                        }
+                        // recomecar = 1;
                     } else {
                         possibilidades[i][j] = possib;
                     }
-                    */
                 } else {
-                    printf("nao tem lacuna, valor : %d\n", solucao[i][j]);
                     possibilidades[i][j] = 0;
                 }
             }
@@ -249,7 +279,9 @@ int main() {
     printf("Configuracao inicial do jogo:\n");
     showMat(solucao, 9);
     // chama a funcao que resolve o problema
-    solucaoSudoku(solucao, 9);
+    solucaoSudoku(&solucao, 9);
+
+    showMat(solucao, 9);
 
     return 0;
 }
@@ -263,8 +295,9 @@ void inicializaVetor(int v[], int tam) {
     }
 }
 
-void showVet(int vetor[], int tam) {
+void showVet(int vetor[], int tam, char contexto[10]) {
     int z;
+    printf("contexto: %s ", contexto);
     for (z = 0; z < tam; z++) {
         printf("item %d ", vetor[z]);
     }
