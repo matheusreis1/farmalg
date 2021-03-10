@@ -14,9 +14,7 @@ int main() {
 
     for (i = 0; i < numbers_array_length; i++) {
         for (j = 0; j < numbers_array_length - i; j++) {
-            if (numbers[j] > numbers[j + 1]) {
-                swap(&numbers[j], &numbers[j+1]);
-            }
+            numbers[j] > numbers[j + 1] ? swap(&numbers[j], &numbers[j+1]) : "";
         }
     }
 
