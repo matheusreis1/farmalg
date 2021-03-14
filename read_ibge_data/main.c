@@ -34,7 +34,7 @@ int main() {
     REG_FIXO_AUX aux;
     IBGE states[27];
     int indexState = 0;
-    int countCities = 1;
+    int countCities = 0;
 
     filePointer = fopen(fileName, "rt");
 
@@ -85,11 +85,7 @@ int main() {
             countCities++;
         } else { // current not equal to last
             strcpy(states[indexState].uf, last);
-            if (indexState == 0) {
-                states[indexState].quantidadeMunicipio = countCities - 1;
-            } else {
-                states[indexState].quantidadeMunicipio = countCities;
-            }
+            states[indexState].quantidadeMunicipio = countCities;
 
             indexState++;
             countCities = 1;
