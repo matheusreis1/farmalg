@@ -3,7 +3,9 @@
 #define MAX_LINE_BUFFER 256
 
 typedef struct _REG_FIXO_AUX {
-    char uf[18];
+    char ufCode[1];
+    char delim;
+    char uf[17];
     char delim1;
     char mesorregiao[19];
     char delim2;
@@ -30,10 +32,9 @@ int main() {
     char nomeArquivo[] = "ibge_municipios_coluna_fixa_sem_cab.txt";
     char buffer[MAX_LINE_BUFFER], *p;
     REG_FIXO_AUX aux;
-    int tam, numreg, indexState = 0;
     IBGE states[27];
+    int tam, numreg, indexState = 0;
     int numCidades = 1;
-    int index = 0;
 
     fp = fopen(nomeArquivo, "rt");
 
@@ -44,8 +45,6 @@ int main() {
     }
 
     while (!feof(fp)) {
-    // while (index < 200) {
-        index++;
         char last[18];
         char current[18];
 
@@ -62,6 +61,7 @@ int main() {
 
         memcpy((void *)&aux, buffer, sizeof(REG_FIXO_AUX));
 
+        aux.delim = '\0';
         aux.delim1 = '\0';
         aux.delim2 = '\0';
         aux.delim3 = '\0';
@@ -75,7 +75,6 @@ int main() {
         if (strlen(last) == 0) {
             strcpy(last, aux.uf);
         }
-        printf("equal %d  %d %d %s %d\n", strcmp(current, last), index, numCidades, current, indexState);
 
         if (strcmp(current, last) == 0) {
             if (feof(fp)) {
@@ -101,8 +100,7 @@ int main() {
 
     int i = 0;
     while (i < 27) {
-        puts(states[i].uf);
-        printf("Num: %d\n", states[i].quantidadeMunicipio);
+        printf("Estado: %s - numero de municipios: %d\n", states[i].uf, states[i].quantidadeMunicipio);
         i++;
     }
 
