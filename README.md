@@ -1,8 +1,7 @@
 # farmalg
 
 ### Requirements
-- Docker
-- make
+- [Docker](https://www.docker.com/)
 
 ### How to use
 
