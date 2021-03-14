@@ -28,38 +28,38 @@ typedef struct _IBGE {
 } IBGE;
 
 int main() {
-    FILE *fp;
-    char nomeArquivo[] = "ibge_municipios_coluna_fixa_sem_cab.txt";
-    char buffer[MAX_LINE_BUFFER], *p;
+    FILE *filePointer;
+    char fileName[] = "ibge_municipios_coluna_fixa_sem_cab.txt";
+    char currentLine[MAX_LINE_BUFFER], *pointer;
     REG_FIXO_AUX aux;
     IBGE states[27];
-    int tam, numreg, indexState = 0;
-    int numCidades = 1;
+    int indexState = 0;
+    int countCities = 1;
 
-    fp = fopen(nomeArquivo, "rt");
+    filePointer = fopen(fileName, "rt");
 
-    if (fp == NULL) {
-        printf("O arquivo %s não foi localizado.\n\n", nomeArquivo);
-        fclose(fp);
+    if (filePointer == NULL) {
+        printf("O arquivo %s não foi localizado.\n\n", fileName);
+        fclose(filePointer);
         return -1;
     }
 
-    while (!feof(fp)) {
-        char last[18];
-        char current[18];
+    while (!feof(filePointer)) {
+        char last[17];
+        char current[17];
 
-        fgets(buffer, MAX_LINE_BUFFER, fp);
+        fgets(currentLine, MAX_LINE_BUFFER, filePointer);
 
-        p = buffer;
-        while (*p != '\0') {
-            if (*p == '\n' || *p == '\r') {
-                *p = '\0';
+        pointer = currentLine;
+        while (*pointer != '\0') {
+            if (*pointer == '\n' || *pointer == '\r') {
+                *pointer = '\0';
                 break;
             }
-            p++;
+            pointer++;
         }
 
-        memcpy((void *)&aux, buffer, sizeof(REG_FIXO_AUX));
+        memcpy((void *)&aux, currentLine, sizeof(REG_FIXO_AUX));
 
         aux.delim = '\0';
         aux.delim1 = '\0';
@@ -76,32 +76,31 @@ int main() {
             strcpy(last, aux.uf);
         }
 
-        if (strcmp(current, last) == 0) {
-            if (feof(fp)) {
+        if (strcmp(current, last) == 0) { // current equal to last
+            if (feof(filePointer)) { // end of file
                 strcpy(states[indexState].uf, last);
-                states[indexState].quantidadeMunicipio = numCidades;
+                states[indexState].quantidadeMunicipio = countCities;
             }
-            numCidades++;
-        } else {
+
+            countCities++;
+        } else { // current not equal to last
             strcpy(states[indexState].uf, last);
             if (indexState == 0) {
-                states[indexState].quantidadeMunicipio = numCidades - 1;
+                states[indexState].quantidadeMunicipio = countCities - 1;
             } else {
-                states[indexState].quantidadeMunicipio = numCidades;
+                states[indexState].quantidadeMunicipio = countCities;
             }
 
             indexState++;
-            numCidades = 1;
+            countCities = 1;
         }
 
         strcpy(last, aux.uf);
     }
-    fclose(fp);
+    fclose(filePointer);
 
-    int i = 0;
-    while (i < 27) {
-        printf("Estado: %s - numero de municipios: %d\n", states[i].uf, states[i].quantidadeMunicipio);
-        i++;
+    for (indexState = 0; indexState < 27; indexState++) {
+        printf("Estado: %s - numero de municipios: %d\n", states[indexState].uf, states[indexState].quantidadeMunicipio);
     }
 
     return 0;
