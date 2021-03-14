@@ -10,7 +10,7 @@
 ```
 make new path=<desired_folder>
 ```
-It will create a new folder and a `main.c` file.
+It will create a new folder with a `main.c` file inside.
 
 - To run a program, just execute:
 ```
