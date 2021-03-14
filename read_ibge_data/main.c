@@ -100,7 +100,7 @@ int main() {
     fclose(filePointer);
 
     for (indexState = 0; indexState < 27; indexState++) {
-        printf("Estado: %s - numero de municipios: %d\n", states[indexState].uf, states[indexState].quantidadeMunicipio);
+        printf("Estado: %s - Quantidade de municipios: %d\n", states[indexState].uf, states[indexState].quantidadeMunicipio);
     }
 
     return 0;
