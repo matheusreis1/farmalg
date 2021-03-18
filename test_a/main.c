@@ -1,8 +1,10 @@
 #include <stdio.h>
 #include <string.h>
+#define valor_maximo(a, b) ((a) > (b) ? (a) : (b))
 
 char* uniao(char* str_a, char* str_b);
 char* intersecao(char* str_a, char* str_b);
+char* xor(char* str_a, char* str_b);
 
 int main() {
     char str_a[129];
@@ -17,12 +19,16 @@ int main() {
     char* intersecao_msg;
     intersecao_msg = intersecao(&str_a, &str_b);
 
+    char* xor_msg;
+    xor_msg = xor(&str_a, &str_b);
+
     printf("Uniao: %s\n", uniao_msg);
     printf("Intersecao: %s\n", intersecao_msg);
-    printf("XOR: \n");
+    printf("XOR: %s\n", xor_msg);
 
     free(uniao_msg);
     free(intersecao_msg);
+    free(xor_msg);
 }
 
 char* uniao(char* str_a, char* str_b) {
@@ -78,6 +84,23 @@ char* intersecao(char* str_a, char* str_b) {
     intersecao[count] = '\0';
 
     return intersecao;
+}
+
+char* xor(char* str_a, char* str_b) {
+    char* xor;
+    xor = malloc(sizeof (char) * 129);
+
+    int lenght_str_a = strlen(str_a);
+    int lenght_str_b = strlen(str_b);
+    int count = 0;
+
+    for (count = 0; count < valor_maximo(lenght_str_a, lenght_str_b); count++) {
+        xor[count] = (char)(str_a[count] ^ str_b[count]);
+    }
+
+    xor[count] = '\0';
+
+    return xor;
 }
 
 /*
